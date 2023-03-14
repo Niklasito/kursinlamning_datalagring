@@ -20,6 +20,9 @@ namespace kursinlamning_datalagring.Models.Entities
         [Column(TypeName = "char(13)")]
         public string PhoneNumber { get; set; } = null!;
 
+        public int VehicleId { get; set; }
+        public VehiclesEntity Vehicle { get; set; } = null!;
+
         public ICollection<VehiclesEntity> Vehicles = new HashSet<VehiclesEntity>();
     }
 
