@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace kursinlamning_datalagring.Models.Entities
 {
+    [Index(nameof(Email), IsUnique = true)]
     internal class MechanicsEntity
         
     {

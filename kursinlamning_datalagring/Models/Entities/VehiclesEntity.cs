@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace kursinlamning_datalagring.Models.Entities
 {
+    [Index(nameof(CarRegistration), IsUnique = true)]
     internal class VehiclesEntity
     {
         [Key]
@@ -17,8 +19,9 @@ namespace kursinlamning_datalagring.Models.Entities
         [Column(TypeName = "char(4)")]
         public int YearOfMake { get; set; }
 
+        [Required]
         public int CarOwnerId { get; set; }
-        public CarOwnersEntity Owner { get; set; } = null!;
+        public CarOwnersEntity CarOwner{ get; set; } = null!;
 
     }
 }

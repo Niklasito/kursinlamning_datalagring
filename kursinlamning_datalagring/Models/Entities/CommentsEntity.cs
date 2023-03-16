@@ -12,10 +12,15 @@ namespace kursinlamning_datalagring.Models.Entities
             [Required]
             [Column(TypeName = "nvarchar(200)")]
             public string Comment { get; set; } = null!;
-            public DateTime DateCreated { get; set; } = DateTime.Now;
+            public DateTime DateCreated { get; set; }
 
-            public ErrorReportsEntity ErrorReportId { get; set; } = null!;
-            public MechanicsEntity MechanicId { get; set; } = null!;
+            [Required]
+            public int ErrorReportId { get; set; }
+            public ErrorReportsEntity ErrorReport { get; set; } = null!;
+            [Required]
+        
+            public int MechanicId { get; set; }
+            public MechanicsEntity Mechanic { get; set; } = null!;
 
     }
 }

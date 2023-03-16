@@ -8,18 +8,19 @@ namespace kursinlamning_datalagring.Models.Entities
     {
         [Key]
         public int Id { get; set; }
-        public DateTime Datecreated { get; set; } = DateTime.Now;
+        public DateTime Datecreated { get; set; }
 
-        public DateTime ExpectedFinished { get; set; } = DateTime.Now.Add(14);
+        public DateTime ExpectedFinished { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(30)")]
 
         public string ErrorDescription { get; set; } = null!;
 
-        public VehiclesEntity VehicleId { get; set; } = null!;
-
-        public ErrorStatusesEntity ErrorStatusId { get; set; } = null!;
+        public ICollection<CommentsEntity> Comments { get; set; } = new HashSet<CommentsEntity>();
+        public VehiclesEntity Vehicle { get; set; } = null!;
+        public int StatusId { get; set; }
+        public ErrorStatusesEntity ErrorStatus { get; set; } = null!;
     }
 
 }
