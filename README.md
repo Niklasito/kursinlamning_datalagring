@@ -1,13 +1,15 @@
 # Kursinlämning Datalagring
 
+Välkommen!
+
 Det här repot består av min inlämningsuppgift i Datalagring.
 
 Applikationen är ett verktyg för att lämna in bilen hos en mekaniker.
 Användaren kan skapa ett felärende och får skriva i sina uppgifter som sedan lagras i databasen. 
 Det ligger ifrån början 2 felärenden inlagada i databasen. För att söka på dessa felärenden kan man skriva in följande registreringsnummer:
 
-## ABC123
-## NET702
+### ABC123
+### NET702
 
 I applikationen kan man som användare söka efter sitt registreringsnummer för att se status på sitt eget felärende.
 
