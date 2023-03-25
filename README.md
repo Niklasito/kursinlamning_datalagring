@@ -14,7 +14,7 @@ I applikationen kan man som användare söka efter sitt registreringsnummer för
 I menyval 3 på huvudmenyn kan man som personal se alla ärenden, uppdatera status på ett ärende, samt lägga till kommentar/er på ett ärende.
 
 
-# Vy överhuvudmeny
+# Vy över huvudmeny
 
 ![image](https://user-images.githubusercontent.com/110826266/227719927-a2aa1384-d684-4d4a-a02a-a69583b9cf4b.png)
 
