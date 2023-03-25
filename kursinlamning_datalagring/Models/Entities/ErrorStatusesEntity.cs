@@ -13,7 +13,9 @@ namespace kursinlamning_datalagring.Models.Entities
         [Required]
         [Column(TypeName = "nvarchar(40)")]
         public string Status { get; set; } = null!;
-        public MechanicsEntity MechanicId { get; set; } = null!;
+
+        public ICollection<ErrorReportsEntity> ErrorReports { get; set; } = new HashSet<ErrorReportsEntity>();
+
     }
 
 }

@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Class1.cs" />
+    <Compile Remove="Services\MechanicService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="7.0.3" />
     <PackageReference Include="microsoft.entityframeworkcore.tools" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>

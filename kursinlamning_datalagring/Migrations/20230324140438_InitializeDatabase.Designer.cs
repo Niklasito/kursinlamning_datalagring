@@ -12,7 +12,7 @@ using kursinlamning_datalagring.Contexts;
 namespace kursinlamning_datalagring.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230316131504_InitializeDatabase")]
+    [Migration("20230324140438_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -35,8 +35,8 @@ namespace kursinlamning_datalagring.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -69,7 +69,10 @@ namespace kursinlamning_datalagring.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CommentsId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -77,14 +80,9 @@ namespace kursinlamning_datalagring.Migrations
                     b.Property<int>("ErrorReportId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MechanicId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ErrorReportId");
-
-                    b.HasIndex("MechanicId");
 
                     b.ToTable("Comments");
                 });
@@ -97,15 +95,15 @@ namespace kursinlamning_datalagring.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CommentsId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Datecreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ErrorDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("ErrorStatusId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ExpectedFinished")
                         .HasColumnType("datetime2");
@@ -118,7 +116,7 @@ namespace kursinlamning_datalagring.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ErrorStatusId");
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("VehicleId");
 
@@ -133,50 +131,13 @@ namespace kursinlamning_datalagring.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MechanicIdId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MechanicIdId");
-
                     b.ToTable("ErrorStatuses");
-                });
-
-            modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.MechanicsEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("char(13)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Mechanics");
                 });
 
             modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.VehiclesEntity", b =>
@@ -193,10 +154,6 @@ namespace kursinlamning_datalagring.Migrations
                     b.Property<string>("CarRegistration")
                         .IsRequired()
                         .HasColumnType("char(6)");
-
-                    b.Property<string>("YearOfMake")
-                        .IsRequired()
-                        .HasColumnType("char(4)");
 
                     b.HasKey("Id");
 
@@ -216,22 +173,14 @@ namespace kursinlamning_datalagring.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("kursinlamning_datalagring.Models.Entities.MechanicsEntity", "Mechanic")
-                        .WithMany()
-                        .HasForeignKey("MechanicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ErrorReport");
-
-                    b.Navigation("Mechanic");
                 });
 
             modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.ErrorReportsEntity", b =>
                 {
                     b.HasOne("kursinlamning_datalagring.Models.Entities.ErrorStatusesEntity", "ErrorStatus")
-                        .WithMany()
-                        .HasForeignKey("ErrorStatusId")
+                        .WithMany("ErrorReports")
+                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -244,17 +193,6 @@ namespace kursinlamning_datalagring.Migrations
                     b.Navigation("ErrorStatus");
 
                     b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.ErrorStatusesEntity", b =>
-                {
-                    b.HasOne("kursinlamning_datalagring.Models.Entities.MechanicsEntity", "MechanicId")
-                        .WithMany()
-                        .HasForeignKey("MechanicIdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MechanicId");
                 });
 
             modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.VehiclesEntity", b =>
@@ -271,6 +209,11 @@ namespace kursinlamning_datalagring.Migrations
             modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.ErrorReportsEntity", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("kursinlamning_datalagring.Models.Entities.ErrorStatusesEntity", b =>
+                {
+                    b.Navigation("ErrorReports");
                 });
 #pragma warning restore 612, 618
         }

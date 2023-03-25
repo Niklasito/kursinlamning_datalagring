@@ -16,10 +16,6 @@ namespace kursinlamning_datalagring.Models.Entities
         public string CarRegistration { get; set; } = null!;
 
         [Required]
-        [Column(TypeName = "char(4)")]
-        public int YearOfMake { get; set; }
-
-        [Required]
         public int CarOwnerId { get; set; }
         public CarOwnersEntity CarOwner{ get; set; } = null!;
 

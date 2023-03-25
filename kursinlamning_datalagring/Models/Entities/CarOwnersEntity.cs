@@ -15,7 +15,8 @@ namespace kursinlamning_datalagring.Models.Entities
         [Required]
         public string LastName { get; set; } = null!;
 
-        [StringLength(50)]
+        [StringLength(150)]
+        [EmailAddress]
         public string Email { get; set; } = null!;
 
         [Required]

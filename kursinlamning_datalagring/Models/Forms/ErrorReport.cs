@@ -14,12 +14,12 @@ namespace kursinlamning_datalagring.Models.Forms
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string CarRegistration { get; set; } = null!;
-
-        public int YearOfMake { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
-
         public DateTime ExpectedFinished { get; set; } = DateTime.Now.AddDays(10);
         public string Description { get; set; } = null!;
+        public int StatusId { get; set; }
+        public string Status { get; set; } = null!;
+        public ICollection<CommentsForm> Comments { get; set; } = new HashSet<CommentsForm>();
     }
 
 }
