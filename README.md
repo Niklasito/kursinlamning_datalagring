@@ -21,15 +21,15 @@ I menyval 3 på huvudmenyn kan man som personal se alla ärenden, uppdatera stat
 ![image](https://user-images.githubusercontent.com/110826266/227719927-a2aa1384-d684-4d4a-a02a-a69583b9cf4b.png)
 
 
-# Vy för att se status på ett ärende:
+# Vy för att se status på ett ärende
 
 ![image](https://user-images.githubusercontent.com/110826266/227720111-9812db69-4ac3-4330-9bd5-bee656192e00.png)
 
-# Vy för att se alla ärenden:
+# Vy för att se alla ärenden
 
 ![image](https://user-images.githubusercontent.com/110826266/227720722-e8aa6bcd-593d-4517-9cfc-0568fa239baf.png)
 
-# Vy för att se mekanikernas menyval:
+# Vy för att se mekanikernas menyval
 
 ![image](https://user-images.githubusercontent.com/110826266/227720778-dd66a99b-105d-466a-a482-159ac9572740.png)
 
