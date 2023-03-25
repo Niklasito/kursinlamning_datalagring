@@ -69,7 +69,6 @@ namespace kursinlamning_datalagring.Migrations
                     Datecreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpectedFinished = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ErrorDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CommentsId = table.Column<int>(type: "int", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -98,8 +97,7 @@ namespace kursinlamning_datalagring.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ErrorReportId = table.Column<int>(type: "int", nullable: false),
-                    CommentsId = table.Column<int>(type: "int", nullable: false)
+                    ErrorReportId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

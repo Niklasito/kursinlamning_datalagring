@@ -12,7 +12,7 @@ using kursinlamning_datalagring.Contexts;
 namespace kursinlamning_datalagring.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230324140438_InitializeDatabase")]
+    [Migration("20230325131558_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -71,9 +71,6 @@ namespace kursinlamning_datalagring.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CommentsId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -94,9 +91,6 @@ namespace kursinlamning_datalagring.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentsId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Datecreated")
                         .HasColumnType("datetime2");

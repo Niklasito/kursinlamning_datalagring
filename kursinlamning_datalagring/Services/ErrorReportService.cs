@@ -62,7 +62,7 @@ namespace kursinlamning_datalagring.Services
                 ExpectedFinished = errorReport.ExpectedFinished,
                 ErrorDescription = errorReport.Description,
                 Vehicle = vehicle,
-                StatusId = 1
+                StatusId = 1 //All new reports are automatically given a status id of 1, "inte påbörjad"
             };
 
 
@@ -72,45 +72,16 @@ namespace kursinlamning_datalagring.Services
             return errorReportEntity;
         }
 
-
+        //Function to fetch all available ErrorReports.
         public async Task<IEnumerable<ErrorReportsEntity>> GetAllErrorReportsAsync()
         {
 
             return await _context.ErrorReports.Include(x => x.Vehicle).ThenInclude(x => x.CarOwner).Include(x => x.ErrorStatus).Include(x => x.Comments).AsNoTracking().ToListAsync();
 
-            //var errorReports = await _context.ErrorReports
-            //    .Include(x => x.Vehicle)
-            //    .ThenInclude(x => x.CarOwner)
-            //    .Include(x => x.ErrorStatus)
-            //    .Include(x => x.Comments)
-            //    .AsNoTracking()
-            //    .ToListAsync();
 
-
-            //return errorReports.Select(showReports => new ErrorReport
-            //{
-            //    Id = showReports.Id,
-            //    DateCreated = showReports.Datecreated,
-            //    ExpectedFinished = showReports.ExpectedFinished,
-            //    Description = showReports.ErrorDescription,
-            //    FirstName = showReports.Vehicle.CarOwner.FirstName,
-            //    LastName = showReports.Vehicle.CarOwner.LastName,
-            //    Email = showReports.Vehicle.CarOwner.Email,
-            //    PhoneNumber = showReports.Vehicle.CarOwner.PhoneNumber,
-            //    CarRegistration = showReports.Vehicle.CarRegistration,
-            //    StatusId = showReports.ErrorStatus.Id,
-            //    Status = showReports.ErrorStatus.Status,
-            //    Comments = showReports.Comments.Select(x => new CommentsForm
-            //    {
-            //        Id = x.Id,
-            //        RepairComment = x.Comment,
-            //        CommentWasCreated = x.DateCreated
-            //    }).ToList()
-
-
-            //});
         }
 
+        //Function to fetch single ErrorReport based on the car registration.
         public async Task<ErrorReport> GetSingleCarReportAsync(string carRegistration)
         {
             var errorReport =  _context.ErrorReports
@@ -118,7 +89,7 @@ namespace kursinlamning_datalagring.Services
                 .ThenInclude(x => x.CarOwner)
                 .Include(x => x.ErrorStatus)
                 .Include(x => x.Comments)
-                .AsNoTracking()
+                .AsNoTracking() 
                 .FirstOrDefault(x => x.Vehicle.CarRegistration == carRegistration);
 
             if (errorReport == null)
