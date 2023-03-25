@@ -46,8 +46,6 @@ namespace kursinlamning_datalagring.Contexts
 
         public DbSet<ErrorReportsEntity> ErrorReports { get; set; } = null!;
 
-        public DbSet<MechanicsEntity> Mechanics { get; set; } = null!;
-
         public DbSet<CommentsEntity> Comments { get; set; } = null!;
 
         public DbSet<ErrorStatusesEntity> ErrorStatuses { get; set; } = null!;

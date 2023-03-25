@@ -11,61 +11,168 @@ namespace kursinlamning_datalagring.Services
 
         private static DataContext _context = new DataContext();
 
-        public async Task GetOrCreateIfNotExistsRepportAsync(ErrorReport errorReport)
+        public async Task<ErrorReportsEntity> CreateNewErrorReportIfNotExistsAsync(ErrorReport errorReport)
         {
+           
+            var existingErrorReport = await _context.ErrorReports
+                .Include(x => x.Vehicle)
+                .ThenInclude(x => x.CarOwner)
+                .Include(x => x.ErrorStatus)
+                .FirstOrDefaultAsync(x => x.Vehicle.CarRegistration == errorReport.CarRegistration
+                 && x.ErrorDescription == errorReport.Description);
 
-            var errorReportsEntity = await _context.ErrorReports.FirstOrDefaultAsync(x => x.Id == errorReport.Id);
-            if
+            if (existingErrorReport != null)
+            {
+                return existingErrorReport;
+            }
+
+            var carOwner = await _context.CarOwners
+                .FirstOrDefaultAsync(x => x.Email == errorReport.Email);
+
+            if (carOwner == null)
+            {
+                carOwner = new CarOwnersEntity
+                {
+                    FirstName = errorReport.FirstName,
+                    LastName = errorReport.LastName,
+                    Email = errorReport.Email,
+                    PhoneNumber = errorReport.PhoneNumber
+                };
+
+                _context.CarOwners.Add(carOwner);
+            }
+
+            var vehicle = await _context.Vehicles
+                .FirstOrDefaultAsync(x => x.CarRegistration == errorReport.CarRegistration);
+
+            if (vehicle == null)
+            {
+                vehicle = new VehiclesEntity
+                {
+                    CarRegistration = errorReport.CarRegistration,
+                    CarOwner = carOwner
+                };
+
+                _context.Vehicles.Add(vehicle);
+            }
+
+            var errorReportEntity = new ErrorReportsEntity
             {
                 Datecreated = errorReport.DateCreated,
                 ExpectedFinished = errorReport.ExpectedFinished,
                 ErrorDescription = errorReport.Description,
+                Vehicle = vehicle,
+                StatusId = 1
             };
 
-            var vehiclesEntity = await _context.Vehicles.FirstOrDefaultAsync(x => x.CarRegistration == errorReport.CarRegistration);
-            if (vehiclesEntity != null)
-                
-            else
-                veniclesEntity = new VehiclesEntity()
-                {
-                    CarRegistration = errorReport.CarRegistration,
-                    YearOfMake = errorReport.YearOfMake,
-                };
+
+            _context.ErrorReports.Add(errorReportEntity);
+            await _context.SaveChangesAsync();
+
+            return errorReportEntity;
+        }
+
+
+        public async Task<IEnumerable<ErrorReportsEntity>> GetAllErrorReportsAsync()
+        {
+
+            return await _context.ErrorReports.Include(x => x.Vehicle).ThenInclude(x => x.CarOwner).Include(x => x.ErrorStatus).Include(x => x.Comments).AsNoTracking().ToListAsync();
+
+            //var errorReports = await _context.ErrorReports
+            //    .Include(x => x.Vehicle)
+            //    .ThenInclude(x => x.CarOwner)
+            //    .Include(x => x.ErrorStatus)
+            //    .Include(x => x.Comments)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
+
+            //return errorReports.Select(showReports => new ErrorReport
+            //{
+            //    Id = showReports.Id,
+            //    DateCreated = showReports.Datecreated,
+            //    ExpectedFinished = showReports.ExpectedFinished,
+            //    Description = showReports.ErrorDescription,
+            //    FirstName = showReports.Vehicle.CarOwner.FirstName,
+            //    LastName = showReports.Vehicle.CarOwner.LastName,
+            //    Email = showReports.Vehicle.CarOwner.Email,
+            //    PhoneNumber = showReports.Vehicle.CarOwner.PhoneNumber,
+            //    CarRegistration = showReports.Vehicle.CarRegistration,
+            //    StatusId = showReports.ErrorStatus.Id,
+            //    Status = showReports.ErrorStatus.Status,
+            //    Comments = showReports.Comments.Select(x => new CommentsForm
+            //    {
+            //        Id = x.Id,
+            //        RepairComment = x.Comment,
+            //        CommentWasCreated = x.DateCreated
+            //    }).ToList()
+
+
+            //});
+        }
+
+        public async Task<ErrorReport> GetSingleCarReportAsync(string carRegistration)
+        {
+            var errorReport =  _context.ErrorReports
+                .Include(x => x.Vehicle)
+                .ThenInclude(x => x.CarOwner)
+                .Include(x => x.ErrorStatus)
+                .Include(x => x.Comments)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Vehicle.CarRegistration == carRegistration);
+
+            if (errorReport == null)
+            {
+                return null;
             }
 
 
-            var vehiclesEntity = new VehiclesEntity
+            return new ErrorReport
             {
-                CarRegistration = errorReport.CarRegistration,
-                YearOfMake = errorReport.YearOfMake,
-
-            };
-            if()
-            vehiclesEntity.CarOwner = new CarOwnersEntity
-            {
-                FirstName = errorReport.FirstName,
-                LastName = errorReport.LastName,
-                Email = errorReport.Email,
-                PhoneNumber = errorReport.PhoneNumber
-            };
-            var errorReportsEntity = new ErrorReportsEntity
-            {
-                Datecreated = errorReport.DateCreated,
+                Id = errorReport.Id,
+                DateCreated = errorReport.Datecreated,
                 ExpectedFinished = errorReport.ExpectedFinished,
-                ErrorDescription = errorReport.Description,
+                Description = errorReport.ErrorDescription,
+                FirstName = errorReport.Vehicle.CarOwner.FirstName,
+                LastName = errorReport.Vehicle.CarOwner.LastName,
+                Email = errorReport.Vehicle.CarOwner.Email,
+                PhoneNumber = errorReport.Vehicle.CarOwner.PhoneNumber,
+                CarRegistration = errorReport.Vehicle.CarRegistration,
+                StatusId = errorReport.ErrorStatus.Id,
+                Status = errorReport.ErrorStatus.Status,
+                Comments = errorReport.Comments.Select(x => new CommentsForm
+                {
+                    Id = x.Id,
+                    RepairComment = x.Comment,
+                    CommentWasCreated = x.DateCreated
+                }).ToList()
+
+
             };
-            
-
-
-          
-        }
-            
-
 
         }
 
-        }
-        
+        public async Task CreateComment(string comments, int errorReportId)
+        {
+            var errorReport = await _context.ErrorReports.FindAsync(errorReportId);
 
+            if (errorReport == null)
+            {
+                Console.WriteLine("Det finns ingen bil med matchande registreringsnummer!");
+            }
+
+            if(!string.IsNullOrEmpty (comments) )
+            {
+                var comment = new CommentsEntity
+                {
+                    Comment = comments,
+                    ErrorReportId = errorReportId,
+                };
+
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
+
 }

@@ -19,7 +19,7 @@ namespace kursinlamning_datalagring.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     PhoneNumber = table.Column<string>(type: "char(13)", nullable: false)
                 },
                 constraints: table =>
@@ -28,19 +28,16 @@ namespace kursinlamning_datalagring.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Mechanics",
+                name: "ErrorStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "char(13)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(40)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Mechanics", x => x.Id);
+                    table.PrimaryKey("PK_ErrorStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,7 +47,6 @@ namespace kursinlamning_datalagring.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CarRegistration = table.Column<string>(type: "char(6)", nullable: false),
-                    YearOfMake = table.Column<string>(type: "char(4)", nullable: false),
                     CarOwnerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -65,26 +61,6 @@ namespace kursinlamning_datalagring.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ErrorStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(40)", nullable: false),
-                    MechanicIdId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ErrorStatuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ErrorStatuses_Mechanics_MechanicIdId",
-                        column: x => x.MechanicIdId,
-                        principalTable: "Mechanics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ErrorReports",
                 columns: table => new
                 {
@@ -92,17 +68,17 @@ namespace kursinlamning_datalagring.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Datecreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpectedFinished = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ErrorDescription = table.Column<string>(type: "nvarchar(30)", nullable: false),
+                    ErrorDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CommentsId = table.Column<int>(type: "int", nullable: false),
                     VehicleId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    ErrorStatusId = table.Column<int>(type: "int", nullable: false)
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ErrorReports", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ErrorReports_ErrorStatuses_ErrorStatusId",
-                        column: x => x.ErrorStatusId,
+                        name: "FK_ErrorReports_ErrorStatuses_StatusId",
+                        column: x => x.StatusId,
                         principalTable: "ErrorStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -120,10 +96,10 @@ namespace kursinlamning_datalagring.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Comment = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ErrorReportId = table.Column<int>(type: "int", nullable: false),
-                    MechanicId = table.Column<int>(type: "int", nullable: false)
+                    CommentsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -134,12 +110,6 @@ namespace kursinlamning_datalagring.Migrations
                         principalTable: "ErrorReports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Comments_Mechanics_MechanicId",
-                        column: x => x.MechanicId,
-                        principalTable: "Mechanics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -154,30 +124,14 @@ namespace kursinlamning_datalagring.Migrations
                 column: "ErrorReportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_MechanicId",
-                table: "Comments",
-                column: "MechanicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ErrorReports_ErrorStatusId",
+                name: "IX_ErrorReports_StatusId",
                 table: "ErrorReports",
-                column: "ErrorStatusId");
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ErrorReports_VehicleId",
                 table: "ErrorReports",
                 column: "VehicleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ErrorStatuses_MechanicIdId",
-                table: "ErrorStatuses",
-                column: "MechanicIdId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Mechanics_Email",
-                table: "Mechanics",
-                column: "Email",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_CarOwnerId",
@@ -205,9 +159,6 @@ namespace kursinlamning_datalagring.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
-
-            migrationBuilder.DropTable(
-                name: "Mechanics");
 
             migrationBuilder.DropTable(
                 name: "CarOwners");
