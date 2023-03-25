@@ -68,9 +68,6 @@ namespace kursinlamning_datalagring.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CommentsId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -91,9 +88,6 @@ namespace kursinlamning_datalagring.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentsId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Datecreated")
                         .HasColumnType("datetime2");

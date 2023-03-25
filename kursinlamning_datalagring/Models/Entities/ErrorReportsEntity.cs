@@ -17,8 +17,6 @@ namespace kursinlamning_datalagring.Models.Entities
 
         public string ErrorDescription { get; set; } = null!;
 
-        public int CommentsId { get; set; }
-        [ForeignKey("CommentsId")]
         public ICollection<CommentsEntity> Comments { get; set; } = new HashSet<CommentsEntity>();
         public VehiclesEntity Vehicle { get; set; } = null!;
         public int StatusId { get; set; } = 1;

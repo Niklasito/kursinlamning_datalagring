@@ -74,7 +74,7 @@ namespace kursinlamning_datalagring.Services
             await _errorReportService.CreateNewErrorReportIfNotExistsAsync(errorForm);
             Console.Clear();
             Console.WriteLine("Ditt ärende är nu skapat!");
-            Console.WriteLine($"\nTryck Enter för att gå tillbaka till föregående meny");
+            Console.WriteLine("\n Tryck på enter för att komma tillbaka till menyn.");
             Console.ReadKey();
 
         }
@@ -99,12 +99,12 @@ namespace kursinlamning_datalagring.Services
       
             foreach (var comment in carReport.Comments)
             {
-                Console.WriteLine($"{comment.RepairComment}"); // måste komma in i entiteten, kommer just nu in i formuläret
+                Console.WriteLine($"{comment.RepairComment}");
                 Console.WriteLine($"Kommentaren skapades: {comment.CommentWasCreated}");
                 Console.WriteLine("--------------------------------------------------------");
             }
 
-            Console.WriteLine($"\nTryck Enter för att gå tillbaka till föregående meny");
+            Console.WriteLine("\n Tryck på enter för att komma tillbaka till menyn.");
         }
 
         private async Task UpdateSpecificErrorReportStatus()
@@ -160,7 +160,7 @@ namespace kursinlamning_datalagring.Services
             await _context.SaveChangesAsync();
             Console.Clear();
             Console.WriteLine("\nStatusen är nu uppdaterad!");
-            Console.WriteLine($"\nTryck Enter för att gå tillbaka till föregående meny");
+            Console.WriteLine("\n Tryck på enter för att komma tillbaka till menyn.");
 
         }
         
@@ -200,7 +200,7 @@ namespace kursinlamning_datalagring.Services
 
             Console.Clear();
             Console.WriteLine("Du har nu kommenterat ärendet.");
-            Console.WriteLine("\n Tryck på enter för att komma tillbaka till föregående meny.");
+            Console.WriteLine("\n Tryck på enter för att komma tillbaka till menyn.");
         }
 
 
@@ -230,10 +230,11 @@ namespace kursinlamning_datalagring.Services
                 }
                 Console.WriteLine("\n--------------------------------------------------------");
 
-                Console.WriteLine("\n Tryck på enter för att komma tillbaka till föregående meny.");
+                
 
               
             }
+            Console.WriteLine("\n Tryck på enter för att komma tillbaka till menyn.");
         }
 
         private async Task MechanicsMenu()
