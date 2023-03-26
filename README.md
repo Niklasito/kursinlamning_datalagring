@@ -14,6 +14,7 @@ Det ligger ifrån början 2 felärenden inlagada i databasen. För att söka på
 I applikationen kan man som användare söka efter sitt registreringsnummer för att se status på sitt eget felärende.
 
 I menyval 3 på huvudmenyn kan man som personal se alla ärenden, uppdatera status på ett ärende, samt lägga till kommentar/er på ett ärende.
+Det finns 3 på förhand inlagda statusar i databasen som man kan välja på. 
 
 
 # Vy över huvudmeny
